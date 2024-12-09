@@ -6,7 +6,7 @@
 
 ### Установка
 
-Добавить `"./vendor/aweram/metable/src/resources/views/**/*.blade.php"` в `tailwind.admin.config.js`, созданный в пакете `tailwindcss-theme`.
+Добавить `"./vendor/4geo35/metable/src/resources/views/**/*.blade.php",` в `tailwind.admin.config.js`, созданный в пакете `tailwindcss-theme`.
 
 Для добавления таблицы с файлами:
 
