@@ -1,0 +1,28 @@
+{
+    "name": "4geo35/metable",
+    "description": "Meta model for create meta tags",
+    "minimum-stability": "dev",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vladimir",
+            "email": "aweram-team@yandex.ru"
+        }
+    ],
+    "require": {
+        "laravel/framework": "^11.0",
+        "aweram/tailwindcss-theme": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "GIS\\Metable\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "GIS\\Metable\\MetableServiceProvider"
+            ]
+        }
+    }
+}

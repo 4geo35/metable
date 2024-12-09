@@ -1,0 +1,20 @@
+{
+    "Add meta tag": "Добавить мета тег",
+    "Edit meta tag": "Редактировать мета тег",
+    "Add": "Добавить",
+    "Cancel": "Отмена",
+    "Update": "Отменить",
+    "Meta tag successfully added": "Мета тег успешно добавлен",
+    "Don't create og": "Не создавать og",
+    "Meta tag not found": "Мета тег не найден",
+    "Render tag": "Отображение тега",
+    "Create og": "Создавать og",
+    "Actions": "Действия",
+    "Yes": "Да",
+    "No": "Нет",
+    "Meta tag successfully deleted": "Мета тег успешно удален",
+    "Delete meta tag": "Удалить мета тег",
+    "It will be impossible to restore the meta tag!": "Будет невозможно восстановить мета тег!",
+    "Meta tag successfully updated": "Мета тег успешно обновлен",
+    "Meta tags": "Мета теги"
+}
