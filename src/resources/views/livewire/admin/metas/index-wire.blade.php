@@ -6,15 +6,15 @@
                     <div class="flex justify-between items-center">
                         <h2 class="font-medium text-2xl">{{ __("Meta tags") }}</h2>
 
-                        @include("ma::admin.includes.meta-search")
+                        @include("ma::admin.metas.includes.meta-search")
                     </div>
                     <x-tt::notifications.error prefix="metas-" />
                     <x-tt::notifications.success prefix="metas-" />
                 </div>
             </div>
 
-            @include("ma::admin.includes.meta-table")
-            @include("ma::admin.includes.meta-table-modals")
+            @include("ma::admin.metas.includes.meta-table")
+            @include("ma::admin.metas.includes.meta-table-modals")
         </div>
     </div>
 </div>

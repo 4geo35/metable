@@ -1,13 +1,13 @@
 <?php
 
-namespace GIS\Metable\Livewire;
+namespace GIS\Metable\Livewire\Admin\Metas;
 
 use GIS\Metable\Interfaces\MetaModelInterface;
 use GIS\Metable\Interfaces\ShouldMetaInterface;
 use GIS\Metable\Models\Meta;
 use Livewire\Component;
 
-class MetaIndexWire extends Component
+class IndexWire extends Component
 {
     public ShouldMetaInterface $model;
 
@@ -48,7 +48,7 @@ class MetaIndexWire extends Component
             ->where("metable_type", $this->model::class)
             ->orderBy("name")
             ->get();
-        return view('ma::livewire.admin.metas', compact("metas"));
+        return view('ma::livewire.admin.metas.index-wire', compact("metas"));
     }
 
     public function showCreate(): void

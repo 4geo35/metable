@@ -3,7 +3,8 @@
 namespace GIS\Metable;
 
 use GIS\Metable\Helpers\MetaActionsManager;
-use GIS\Metable\Livewire\MetaIndexWire;
+use GIS\Metable\Livewire\Admin\Metas\IndexWire as MetaIndexWire;
+use GIS\Metable\Livewire\Admin\Metas\PageWire as MetaPageWire;
 use GIS\Metable\Models\Meta;
 use GIS\Metable\Observers\MetaObserver;
 use Illuminate\Support\ServiceProvider;
@@ -21,6 +22,12 @@ class MetableServiceProvider extends ServiceProvider
         Livewire::component(
             "ma-metas",
             $component ?? MetaIndexWire::class
+        );
+
+        $component = config("metable.customMetaPageComponent");
+        Livewire::component(
+            "ma-meta-pages",
+            $component ?? MetaPageWire::class
         );
 
         // Наблюдатели
@@ -41,6 +48,9 @@ class MetableServiceProvider extends ServiceProvider
 
         // Подключение переводов
         $this->loadJsonTranslationsFrom(__DIR__ . "/lang");
+
+        // Routes
+        $this->loadRoutesFrom(__DIR__ . "/routes/admin.php");
 
         // Facades
         $this->app->singleton("meta-actions", function () {
