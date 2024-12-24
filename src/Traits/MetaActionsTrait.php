@@ -42,6 +42,9 @@ trait MetaActionsTrait
         // Найти тег
         $meta = $this->findMeta();
         if (! $meta) return;
+        // Проверить авторизацию
+        $check = $this->checkAuth("update", $meta);
+        if (! $check) return;
 
         $this->name = $meta->name;
         $this->content = $meta->content;
@@ -56,6 +59,9 @@ trait MetaActionsTrait
         // Найти тег
         $meta = $this->findMeta();
         if (! $meta) return;
+        // Проверить авторизацию
+        $check = $this->checkAuth("update", $meta);
+        if (! $check) return;
         // Валидация
         $this->validate();
         $meta->update([
@@ -82,6 +88,9 @@ trait MetaActionsTrait
         // Найти тег
         $meta = $this->findMeta();
         if (! $meta) return;
+        // Проверить авторизацию
+        $check = $this->checkAuth("delete", $meta);
+        if (! $check) return;
 
         $this->displayDelete = true;
     }
@@ -97,6 +106,9 @@ trait MetaActionsTrait
         // Найти тег
         $meta = $this->findMeta();
         if (! $meta) return;
+        // Проверить авторизацию
+        $check = $this->checkAuth("delete", $meta);
+        if (! $check) return;
 
         $meta->delete();
         session()->flash("metas-success", __("Meta tag successfully deleted"));
@@ -104,12 +116,12 @@ trait MetaActionsTrait
         $this->closeDelete();
     }
 
-    private function resetFields(): void
+    protected function resetFields(): void
     {
         $this->reset(["name", "content", "property", "metaId"]);
     }
 
-    private function findMeta(): ?MetaModelInterface
+    protected function findMeta(): ?MetaModelInterface
     {
         $metaClass = config("metable.customMetaModel") ?? Meta::class;
         $meta = $metaClass::find($this->metaId);
@@ -119,5 +131,18 @@ trait MetaActionsTrait
             return null;
         }
         return $meta;
+    }
+
+    protected function checkAuth(string $action, MetaModelInterface $meta = null): bool
+    {
+        try {
+            $this->authorize($action, $meta ?? (config("metable.customMetaModel") ?? Meta::class));
+            return true;
+        } catch (\Exception $ex) {
+            session()->flash("metas-error", __("Unauthorized action"));
+            $this->closeData();
+            $this->closeDelete();
+            return false;
+        }
     }
 }

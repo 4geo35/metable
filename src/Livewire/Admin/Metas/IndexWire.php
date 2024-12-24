@@ -30,11 +30,16 @@ class IndexWire extends Component
     public function showCreate(): void
     {
         $this->resetFields();
+        $check = $this->checkAuth("create");
+        if (! $check) return;
         $this->displayData = true;
     }
 
     public function store(): void
     {
+        $check = $this->checkAuth("create");
+        if (! $check) return;
+
         // Валидация
         $this->validate();
         $this->model->metas()->create([

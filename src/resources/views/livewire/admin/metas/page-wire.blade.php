@@ -3,7 +3,9 @@
         <div class="card">
             <div class="card-body">
                 <div class="space-y-indent-half">
-                    @include("ma::admin.metas.includes.page-create")
+                    @can("create", config("metable.customMetaModel") ?? \GIS\Metable\Models\Meta::class)
+                        @include("ma::admin.metas.includes.page-create")
+                    @endcan
                     <x-tt::notifications.error prefix="metas-" />
                     <x-tt::notifications.success prefix="metas-" />
                 </div>

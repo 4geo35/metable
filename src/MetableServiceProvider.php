@@ -7,6 +7,7 @@ use GIS\Metable\Livewire\Admin\Metas\IndexWire as MetaIndexWire;
 use GIS\Metable\Livewire\Admin\Metas\PageWire as MetaPageWire;
 use GIS\Metable\Models\Meta;
 use GIS\Metable\Observers\MetaObserver;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 
@@ -34,6 +35,13 @@ class MetableServiceProvider extends ServiceProvider
         $metaObserver = config("metable.customMetaObserver") ?? MetaObserver::class;
         $metaModel = config("metable.customMetaModel") ?? Meta::class;
         $metaModel::observe($metaObserver);
+
+        // Policy
+        $metaModel = config("metable.customMetaModel") ?? Meta::class;
+        Gate::policy($metaModel, config("metable.metaPolicy"));
+
+        // Добавить политики в конфигурацию
+        $this->expandConfiguration();
     }
 
     public function register(): void
@@ -56,5 +64,18 @@ class MetableServiceProvider extends ServiceProvider
         $this->app->singleton("meta-actions", function () {
             return new MetaActionsManager;
         });
+    }
+
+    private function expandConfiguration(): void
+    {
+        $um = app()->config["user-management"];
+        $permissions = $um["permissions"];
+        $ma = app()->config["metable"];
+        $permissions[] = [
+            "title" => $ma["metaPolicyTitle"],
+            "policy" => $ma["metaPolicy"],
+            "key" => $ma["metaPolicyKey"]
+        ];
+        app()->config["user-management.permissions"] = $permissions;
     }
 }

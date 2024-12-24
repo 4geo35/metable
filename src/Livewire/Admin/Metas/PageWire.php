@@ -19,20 +19,20 @@ class PageWire extends Component
 
     public function render(): View
     {
-        // TODO: check permission
         $metaModelClass = config("metable.customMetaModel") ?? Meta::class;
         $metas = $metaModelClass::query()
             ->whereNotNull("page")
             ->get()
             ->sortBy("page")
             ->groupBy("page");
-        debugbar()->info($metas);
         return view('ma::livewire.admin.metas.page-wire', compact("metas"));
     }
 
     public function store(): void
     {
-        // TODO: check permission
+        $check = $this->checkAuth("create");
+        if (! $check) return;
+
         $this->validate([
             "createPage" => ["required", "string", "max:250"],
             "createName" => ["required", "string", "max:250"],

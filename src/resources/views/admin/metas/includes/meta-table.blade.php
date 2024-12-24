@@ -18,12 +18,16 @@
                 <td>
                     <div class="flex justify-center">
                         <button type="button" class="btn btn-dark px-btn-x-ico rounded-e-none"
-                                wire:loading.attr="disabled"
+                                @can("update", $item) wire:loading.attr="disabled"
+                                @else disabled
+                                @endcan
                                 wire:click="showEdit({{ $item->id }})">
                             <x-tt::ico.edit />
                         </button>
                         <button type="button" class="btn btn-danger px-btn-x-ico rounded-s-none"
-                                wire:loading.attr="disabled"
+                                @can("delete", $item) wire:loading.attr="disabled"
+                                @else disabled
+                                @endcan
                                 wire:click="showDelete({{ $item->id }})">
                             <x-tt::ico.trash />
                         </button>

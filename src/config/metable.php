@@ -12,4 +12,8 @@ return [
         "image",
         "description"
     ],
+    // Policy
+    "metaPolicyTitle" => "Управление мета тегами",
+    "metaPolicy" => \GIS\Metable\Policies\MetaPolicy::class,
+    "metaPolicyKey" => "metas",
 ];
