@@ -5,6 +5,7 @@ namespace GIS\Metable\Livewire\Admin\Metas;
 use GIS\Metable\Interfaces\MetaModelInterface;
 use GIS\Metable\Interfaces\ShouldMetaInterface;
 use GIS\Metable\Models\Meta;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class IndexWire extends Component
@@ -39,7 +40,7 @@ class IndexWire extends Component
         ];
     }
 
-    public function render()
+    public function render(): View
     {
         $metaClass = config("metable.customMetaModel") ?? Meta::class;
         $metas = $metaClass::query()

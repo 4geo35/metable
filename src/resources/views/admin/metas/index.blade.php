@@ -2,5 +2,5 @@
     <x-slot name="title">{{ __("Metas") }}</x-slot>
     <x-slot name="pageTitle">{{ __("Metas") }}</x-slot>
 
-    Hello
+    <livewire:ma-meta-pages />
 </x-admin-layout>

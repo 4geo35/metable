@@ -21,7 +21,7 @@ class MetaObserver
             $data["meta_id"] = $meta->id;
             $metaModel = config("metable.customMetaModel") ?? Meta::class;
             $metaModel::create($data);
-            MetaActions::forgetByModelCache($meta->metable);
+            if ($meta->metable) MetaActions::forgetByModelCache($meta->metable);
         }
     }
 
@@ -37,13 +37,13 @@ class MetaObserver
             $data["property"] = $child->property;
             $child->update($data);
         }
-        MetaActions::forgetByModelCache($meta->metable);
+        if ($meta->metable) MetaActions::forgetByModelCache($meta->metable);
     }
 
     public function deleted(MetaModelInterface $meta)
     {
         $child = $meta->child;
         if (! empty($child)) $child->delete();
-        MetaActions::forgetByModelCache($meta->metable);
+        if ($meta->metable) MetaActions::forgetByModelCache($meta->metable);
     }
 }
