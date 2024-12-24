@@ -1,5 +1,5 @@
 <form wire:submit.prevent="store"
-      class="flex flex-col space-y-indent-half md:flex-row md:space-x-indent-half md:space-y-0">
+      class="flex flex-col space-y-indent-half lg:flex-row lg:space-x-indent-half lg:space-y-0">
     <div class="flex-auto">
         <input type="text" aria-label="{{ __('Page') }}" placeholder="{{ __('Page') }}" required
                class="form-control {{ $errors->has('createPage') }}" wire:model="createPage">
@@ -28,7 +28,7 @@
         <input type="checkbox"
                class="form-check-input" id="metaCreateSeparated"
                wire:model="createSeparated">
-        <label for="metaCreateSeparated" class="form-check-label">
+        <label for="metaCreateSeparated" class="form-check-label text-nowrap">
             {{ __("Don't create og") }}
         </label>
     </div>
