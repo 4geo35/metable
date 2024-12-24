@@ -3,11 +3,14 @@
 namespace GIS\Metable\Livewire\Admin\Metas;
 
 use GIS\Metable\Models\Meta;
+use GIS\Metable\Traits\MetaActionsTrait;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class PageWire extends Component
 {
+    use MetaActionsTrait;
+
     public string $createPage = "";
     public string $createName = "";
     public string $createContent = "";
@@ -16,7 +19,15 @@ class PageWire extends Component
 
     public function render(): View
     {
-        return view('ma::livewire.admin.metas.page-wire');
+        // TODO: check permission
+        $metaModelClass = config("metable.customMetaModel") ?? Meta::class;
+        $metas = $metaModelClass::query()
+            ->whereNotNull("page")
+            ->get()
+            ->sortBy("page")
+            ->groupBy("page");
+        debugbar()->info($metas);
+        return view('ma::livewire.admin.metas.page-wire', compact("metas"));
     }
 
     public function store(): void
@@ -43,7 +54,7 @@ class PageWire extends Component
             "separated" => $this->createSeparated ? now() : null,
         ]);
 
-        session()->flash("success", __("Meta tag successfully added"));
+        session()->flash("metas-success", __("Meta tag successfully added"));
         $this->reset("createPage", "createName", "createContent", "createProperty", "createSeparated");
     }
 }
