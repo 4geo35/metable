@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static Collection|null getByName(ShouldMetaInterface $model, string $name)
  * @method static array renderByModel(ShouldMetaInterface $model)
  * @method static void forgetByModelCache(ShouldMetaInterface $model)
+ * @method static array renderByPage(string $page)
+ * @method static void forgetByPageCache(string $page)
  *
  * @see MetaActionsManager
  */

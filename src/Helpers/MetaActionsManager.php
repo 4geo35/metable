@@ -4,6 +4,7 @@ namespace GIS\Metable\Helpers;
 
 use GIS\Metable\Interfaces\MetaModelInterface;
 use GIS\Metable\Interfaces\ShouldMetaInterface;
+use GIS\Metable\Models\Meta;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 
@@ -62,6 +63,28 @@ class MetaActionsManager
     public function forgetByModelCache(ShouldMetaInterface $model): void
     {
         Cache::forget($this->makeCacheKey($model));
+    }
+
+    public function renderByPage(string $page): array
+    {
+        $cacheKey = "meta-page:{$page}";
+        return Cache::rememberForever($cacheKey, function () use ($page) {
+            $rendered = [];
+            $metaModelClass = config("metable.customMetaModel") ?? Meta::class;
+            $metas = $metaModelClass::query()
+                ->select("id", "name", "property", "content", "page")
+                ->where("page", $page)
+                ->get();
+            foreach ($metas as $meta) {
+                $rendered[] = $meta->clear_render;
+            }
+            return $rendered;
+        });
+    }
+
+    public function forgetByPageCache(string $page): void
+    {
+        Cache::forget("meta-page:{$page}");
     }
 
     private function makeCacheKey(ShouldMetaInterface $model): string
