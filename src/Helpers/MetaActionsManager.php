@@ -65,6 +65,17 @@ class MetaActionsManager
         Cache::forget($this->makeCacheKey($model));
     }
 
+    public function getByPage(string $page): ?Collection
+    {
+        $metaModelClass = config("metable.customMetaModel") ?? Meta::class;
+        $metas = $metaModelClass::query()
+            ->select("id", "name", "property", "content", "page")
+            ->where("page", $page)
+            ->get();
+        if (! $metas->count()) return null;
+        return $metas;
+    }
+
     public function renderByPage(string $page): array
     {
         $cacheKey = "meta-page:{$page}";
