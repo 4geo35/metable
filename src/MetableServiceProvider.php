@@ -13,57 +13,29 @@ use Livewire\Livewire;
 
 class MetableServiceProvider extends ServiceProvider
 {
+    public function register(): void
+    {
+        $this->loadMigrationsFrom(__DIR__ . "/database/migrations");
+
+        $this->mergeConfigFrom(__DIR__ . "/config/metable.php", "metable");
+
+        $this->loadJsonTranslationsFrom(__DIR__ . "/lang");
+
+        $this->initFacades();
+    }
+
     public function boot(): void
     {
-        // Подключение views.
         $this->loadViewsFrom(__DIR__ . "/resources/views", "ma");
 
-        // Livewire
-        $component = config("metable.customMetaIndexComponent");
-        Livewire::component(
-            "ma-metas",
-            $component ?? MetaIndexWire::class
-        );
-
-        $component = config("metable.customMetaPageComponent");
-        Livewire::component(
-            "ma-meta-pages",
-            $component ?? MetaPageWire::class
-        );
-
-        // Наблюдатели
-        $metaObserver = config("metable.customMetaObserver") ?? MetaObserver::class;
-        $metaModel = config("metable.customMetaModel") ?? Meta::class;
-        $metaModel::observe($metaObserver);
-
-        // Policy
-        $metaModel = config("metable.customMetaModel") ?? Meta::class;
-        Gate::policy($metaModel, config("metable.metaPolicy"));
+        $this->loadRoutesFrom(__DIR__ . "/routes/admin.php");
 
         // Добавить политики в конфигурацию
         $this->expandConfiguration();
-    }
+        $this->observeModels();
+        $this->setPolicies();
 
-    public function register(): void
-    {
-        // Миграции
-        $this->loadMigrationsFrom(__DIR__ . "/database/migrations");
-
-        // Подключение конфигурации
-        $this->mergeConfigFrom(
-            __DIR__ . "/config/metable.php", "metable"
-        );
-
-        // Подключение переводов
-        $this->loadJsonTranslationsFrom(__DIR__ . "/lang");
-
-        // Routes
-        $this->loadRoutesFrom(__DIR__ . "/routes/admin.php");
-
-        // Facades
-        $this->app->singleton("meta-actions", function () {
-            return new MetaActionsManager;
-        });
+        $this->addLivewireComponents();
     }
 
     private function expandConfiguration(): void
@@ -77,5 +49,40 @@ class MetableServiceProvider extends ServiceProvider
             "key" => $ma["metaPolicyKey"]
         ];
         app()->config["user-management.permissions"] = $permissions;
+    }
+
+    protected function initFacades(): void
+    {
+        $this->app->singleton("meta-actions", function () {
+            return new MetaActionsManager;
+        });
+    }
+
+    protected function addLivewireComponents(): void
+    {
+        $component = config("metable.customMetaIndexComponent");
+        Livewire::component(
+            "ma-metas",
+            $component ?? MetaIndexWire::class
+        );
+
+        $component = config("metable.customMetaPageComponent");
+        Livewire::component(
+            "ma-meta-pages",
+            $component ?? MetaPageWire::class
+        );
+    }
+
+    protected function observeModels(): void
+    {
+        $metaObserver = config("metable.customMetaObserver") ?? MetaObserver::class;
+        $metaModel = config("metable.customMetaModel") ?? Meta::class;
+        $metaModel::observe($metaObserver);
+    }
+
+    protected function setPolicies(): void
+    {
+        $metaModel = config("metable.customMetaModel") ?? Meta::class;
+        Gate::policy($metaModel, config("metable.metaPolicy"));
     }
 }
