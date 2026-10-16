@@ -133,7 +133,7 @@ trait MetaActionsTrait
         return $meta;
     }
 
-    protected function checkAuth(string $action, MetaModelInterface $meta = null): bool
+    protected function checkAuth(string $action, ?MetaModelInterface $meta = null): bool
     {
         try {
             $this->authorize($action, $meta ?? (config("metable.customMetaModel") ?? Meta::class));
